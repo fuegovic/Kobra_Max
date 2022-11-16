@@ -1,3 +1,2 @@
-#### Hc32f460kct6 Marlin
-HDSC package here:
-https://github.com/ANYCUBIC-3D/HDSC_SupportPackage
+Marlin firmware for the AnyCubic Kobra Max.
+Based off Marlin 2.0.8 (bugfix)
