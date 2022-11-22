@@ -51,4 +51,10 @@ JD = Junction Deviation
 
 After considerable testing with Linear Advance, this version has it disabled. The 30% extra printing time when it was enabled wasn't offset near enough by the minimal quality increase.
 
+#Filament Printing Examples
 
+![alt-text](https://github.com/wabbitguy/Kobra_Max/blob/master/images/layer_change.jpg)
+
+![alt-text](https://github.com/wabbitguy/Kobra_Max/blob/master/images/single_layer_change.jpg)
+
+![alt-text](https://github.com/wabbitguy/Kobra_Max/blob/master/images/end_result.jpg)
