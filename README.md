@@ -51,7 +51,19 @@ JD = Junction Deviation
 
 After considerable testing with Linear Advance, this version has it disabled. The 30% extra printing time when it was enabled wasn't offset near enough by the minimal quality increase.
 
-#Filament Printing Examples
+# Filament Change Procedure
+
+When the printer receives the M600 filament change GCODE:
+1. The hot end will lift and move to the back left corner (called the park position).
+2. The filament will then retract all the way back to the extruder to allow you to remove it.
+3. Insert the new filament approximately 1 to 2" just past the extruder output; do NOT push the filament all the way to the hot end!)
+4. On the LCD Status display press the "PAUSE" or "RESUME" button (it's mislabeled now but has closed source so can not be altered)
+5. Filament will feed all the way to the hot end, and purge approximately 40mm to ensure accurate change
+6. Wipe the nozzle, printer will then automatically return to the original, lower and resume printing
+
+*Note* after purging there is a slight delay before the hot end returns to the print job. Be patient.
+
+# Filament Printing Examples
 
 ![alt-text](https://github.com/wabbitguy/Kobra_Max/blob/master/images/layer_change.jpg)
 
