@@ -307,6 +307,9 @@
   #define HAS_FAST_MOVES 1
 #endif
 
+static int16_t colourCounter = 0;// added for inline filament swap MELS MOD
+#define KOBRAMAX_COLOUR_CHANGE true// MELS MOD
+
 enum AxisRelative : uint8_t { REL_X, REL_Y, REL_Z, REL_E, E_MODE_ABS, E_MODE_REL };
 
 class GcodeSuite {

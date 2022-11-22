@@ -313,7 +313,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 27: G27(); break;                                    // G27: Nozzle Park
       #endif
 
-      case 28: G28(); break;                                      // G28: Home one or more axes
+      case 28: colourCounter = 0; G28(); break;                   // G28: Home one or more axes
 
       #if HAS_LEVELING
         case 29:                                                  // G29: Bed leveling calibration
@@ -786,7 +786,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
       #endif
 
       #if ENABLED(ADVANCED_PAUSE_FEATURE)
-        case 600: M600(); break;                                  // M600: Pause for Filament Change
+        case 600: M600(); break;                   // M600: Pause for Filament Change
         case 603: M603(); break;                                  // M603: Configure Filament Change
       #endif
 
@@ -945,7 +945,12 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
     }
     break;
 
-    case 'T': T(parser.codenum); break;                           // Tn: Tool Change
+    case 'T':
+				if (KOBRAMAX_COLOUR_CHANGE == false) {// MELS MOD
+					T(parser.codenum);
+        } else if (colourCounter != 0 ) M600();
+        colourCounter++; // increment the counter			
+		break;                           // Tn: Tool Change
 
     #if ENABLED(MARLIN_DEV_MODE)
       case 'D': D(parser.codenum); break;                         // Dn: Debug codes
