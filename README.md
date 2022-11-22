@@ -5,7 +5,7 @@ Based off Marlin 2.0.8 (bugfix)
 
 If you are getting great prints from your Kobra Max keep in mind that you can't fix something that's not broken. Updating your firmware may void your warranty and may or may not perform exactly as you expect it to. Thus, firmware updates are at your own risk.
 
-`*The PAUSE button in the LCD Print Ststus display has been repurposed to allow for filament changes. If you require this pause button to actually pause the printer, do not update the firmware!*`
+`The PAUSE button in the LCD Print Ststus display has been repurposed to allow for filament changes. If you require this pause button to actually pause the printer, do not update the firmware!`
 
 You will be using a host via USB to complete the firmware update (Repetier Server Pro, Octoprint, Pronterface, etc).
 
