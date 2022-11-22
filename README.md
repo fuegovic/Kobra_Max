@@ -9,7 +9,7 @@ If you are getting great prints from your Kobra Max keep in mind that you can't 
 
 You will be using a host via USB to complete the firmware update (Repetier Server Pro, Octoprint, Pronterface, etc).
 
-## Update Procedure
+# Update Procedure
 
 1. Power off the Kobra Max
 2. Remove any USB cable attached to the printer
@@ -35,8 +35,20 @@ The animation graphic will appear on the LCD, within 10 seconds you will hear fi
 
 eSteps for extrusion, any PID tuning may have to be redone
 
-## Firmware Changes
+# Firmware Changes
 
 1. Levelling grid is now 7 x 7 for a 49 point system (was 25 points)
 2. Babystepping Z-offset is 0.01mm (was 0.05mm)
-3. 
+3. M600 gcode supported for filament changes. Both layer based and within a single layer
+4. Maximum extrude length 800mm (to allow for loading and unloading filament full length of bowden tube)
+5. Max bed temp 120C - increased temp rise time to compensate for slow heating rate as temp rises (not all will achieve high temps)
+6. Default feedrates and acceleration have been increased
+7. Firmware version info indicates enabled items
+
+CJ = Classic Jerk
+LA = Linear Advance
+JD = Junction Deviation
+
+After considerable testing with Linear Advance, this version has it disabled. The 30% extra printing time when it was enabled wasn't offset near enough by the minimal quality increase.
+
+
