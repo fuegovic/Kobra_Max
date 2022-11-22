@@ -435,9 +435,9 @@ namespace Anycubic {
       } break;
 
       case AC_timer_paused: {
-//        printer_state = AC_printer_paused;
-//        pause_state   = AC_paused_idle;
-//        SendtoTFTLN(AC_msg_paused);
+        printer_state = AC_printer_paused;
+        pause_state   = AC_paused_idle;
+//      SendtoTFTLN(AC_msg_paused);
       }
       break;
 
@@ -1351,9 +1351,12 @@ namespace Anycubic {
           SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
           lcd_txtbox_index = 0;
         }
-
-	    ChangePageOfTFT(PAGE_FILE);
-	    SendFileList(0);
+        if (isPrinting()) {
+				  ChangePageOfTFT(PAGE_STATUS2);// MEL MOD
+			   } else {
+					ChangePageOfTFT(PAGE_FILE);
+					SendFileList(0);
+				}
 	  }
 	  break;
 
@@ -1698,14 +1701,17 @@ namespace Anycubic {
         }
         break;
 
-        case 2:  // print pause
-          if(isPrintingFromMedia()) {
-            pausePrint();
-            printer_state = AC_printer_pausing;
-            pause_state = AC_paused_idle;
-            ChangePageOfTFT(PAGE_WAIT_PAUSE);
+        case 2:  // print pause (or continue)
+				 // if(isPrintingFromMedia()) {
+           // pausePrint();
+           // printer_state = AC_printer_pausing;
+           // pause_state = AC_paused_idle;
+          //  ChangePageOfTFT(PAGE_WAIT_PAUSE);
 //            injectCommands_P(PSTR("M108"));     // stop waiting temperature M109
-          }
+					// } else {
+					 	TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL MOD
+						wait_for_heatup = false;
+          //}
           break;
 
         case 3: // print stop
@@ -1777,7 +1783,7 @@ namespace Anycubic {
         }
       break;
 
-      case 2: // -
+      case 2: // - MEL MOD for 0.01mm
       {
         z_off = getZOffset_mm();
 
@@ -1785,10 +1791,10 @@ namespace Anycubic {
             return ;
         }
 
-        steps = mmToWholeSteps(-0.05, Z);
+        steps = mmToWholeSteps(-BABYSTEP_MULTIPLICATOR_Z, Z);
         babystepAxis_steps(steps, Z);
 
-        z_off -= 0.05f;
+        z_off -= BABYSTEP_MULTIPLICATOR_Z;
         setZOffset_mm(z_off);
 
         sprintf(str_buf, "%.2f", getZOffset_mm());
@@ -1798,7 +1804,7 @@ namespace Anycubic {
       }
       break;
 
-      case 3: // +
+      case 3: // + MEL MOD 0.01mm
       {
         z_off = getZOffset_mm();
 
@@ -1806,10 +1812,10 @@ namespace Anycubic {
             return ;
         }
 
-        steps = mmToWholeSteps(0.05, Z);
+        steps = mmToWholeSteps(BABYSTEP_MULTIPLICATOR_Z, Z);
         babystepAxis_steps(steps, Z);
 
-        z_off += 0.05f;
+        z_off += BABYSTEP_MULTIPLICATOR_Z;
         setZOffset_mm(z_off);
 
         sprintf(str_buf, "%.2f", getZOffset_mm());
@@ -2184,7 +2190,7 @@ namespace Anycubic {
        SendValueToTFT((uint16_t)getFeedrate_percent(), TXT_PRINT_SPEED_NOW);
     }
 
-    void DgusTFT::page11_handle(void)
+    void DgusTFT::page11_handle(void)// SYSTEM PAGE BUTTONS
     {
         switch (key_value)
         {
@@ -2250,13 +2256,13 @@ namespace Anycubic {
           }
           break;
 
-          case 5:   // about
+          case 5:   // about (gets here from the main page)
 
             SendTxtToTFT(DEVICE_NAME, TXT_ABOUT_DEVICE_NAME);
             SendTxtToTFT(FIRMWARE_VER, TXT_ABOUT_FW_VERSION);
             SendTxtToTFT(BUILD_VOLUME, TXT_ABOUT_PRINT_VOLUMN);
             SendTxtToTFT(TECH_SUPPORT, TXT_ABOUT_TECH_SUPPORT);
-
+						
             ChangePageOfTFT(PAGE_ABOUT);
             break;
 
@@ -2443,7 +2449,7 @@ namespace Anycubic {
               }
               break;
 
-              case 2: // -
+              case 2: // - MEL MOD 0.01mm
               {
                 z_off = getZOffset_mm();
 
@@ -2451,10 +2457,10 @@ namespace Anycubic {
                     return ;
                 }
 
-                steps = mmToWholeSteps(-0.05, Z);
+                steps = mmToWholeSteps(-BABYSTEP_MULTIPLICATOR_Z, Z);
                 babystepAxis_steps(steps, Z);
 
-                z_off -= 0.05f;
+                z_off -= BABYSTEP_MULTIPLICATOR_Z;
                 setZOffset_mm(z_off);
 
                 sprintf(str_buf, "%.2f", getZOffset_mm());
@@ -2464,7 +2470,7 @@ namespace Anycubic {
               }
               break;
 
-              case 3: // +
+              case 3: // + MEL MOD 0.01mm
               {
                 z_off = getZOffset_mm();
 
@@ -2472,10 +2478,10 @@ namespace Anycubic {
                     return ;
                 }
 
-                steps = mmToWholeSteps(0.05, Z);
+                steps = mmToWholeSteps(BABYSTEP_MULTIPLICATOR_Z, Z);
                 babystepAxis_steps(steps, Z);
 
-                z_off += 0.05f;
+                z_off += BABYSTEP_MULTIPLICATOR_Z;
                 setZOffset_mm(z_off);
 
                 sprintf(str_buf, "%.2f", getZOffset_mm());
@@ -2519,16 +2525,16 @@ namespace Anycubic {
 
               case 2: // PLA
               { 
-                setTargetTemp_celsius(190, E0);
+                setTargetTemp_celsius(205, E0);
                 setTargetTemp_celsius(60, BED);
                 ChangePageOfTFT(PAGE_PREHEAT);
               }
               break;
 
-              case 3: // ABS
+              case 3: // PETG
               { 
-                setTargetTemp_celsius(240, E0);
-                setTargetTemp_celsius(90, BED);
+                setTargetTemp_celsius(230, E0);
+                setTargetTemp_celsius(85, BED);
                 ChangePageOfTFT(PAGE_PREHEAT);
               }
 
@@ -3129,8 +3135,9 @@ namespace Anycubic {
             SendTxtToTFT(FIRMWARE_VER, TXT_ABOUT_FW_VERSION);
             SendTxtToTFT(BUILD_VOLUME, TXT_ABOUT_PRINT_VOLUMN);
             SendTxtToTFT(TECH_SUPPORT, TXT_ABOUT_TECH_SUPPORT);
-
+						
             ChangePageOfTFT(PAGE_ABOUT);
+
             break;
 
           case 6:
@@ -3612,10 +3619,10 @@ namespace Anycubic {
             return ;
         }
 
-        steps = mmToWholeSteps(-0.05, Z);
+        steps = mmToWholeSteps(-BABYSTEP_MULTIPLICATOR_Z, Z);
         babystepAxis_steps(steps, Z);
 
-        z_off -= 0.05f;
+        z_off -= BABYSTEP_MULTIPLICATOR_Z;
         setZOffset_mm(z_off);
 
         sprintf(str_buf, "%.2f", getZOffset_mm());
@@ -3633,10 +3640,10 @@ namespace Anycubic {
             return ;
         }
 
-        steps = mmToWholeSteps(0.05, Z);
+        steps = mmToWholeSteps(BABYSTEP_MULTIPLICATOR_Z, Z);
         babystepAxis_steps(steps, Z);
 
-        z_off += 0.05f;
+        z_off += BABYSTEP_MULTIPLICATOR_Z;
         setZOffset_mm(z_off);
 
         sprintf(str_buf, "%.2f", getZOffset_mm());

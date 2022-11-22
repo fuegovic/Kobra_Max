@@ -35,8 +35,23 @@
 #include "../../../../inc/MarlinConfigPre.h"
 #include "../../ui_api.h"
 
-#define DEVICE_NAME             "Anycubic Kobra Max"
-#define FIRMWARE_VER            "Kobra Max V2.8.7"
+#define DEVICE_NAME             "Dudley Do-Right"
+//#define FIRMWARE_VER            "Marlin V2.0.8.1"
+#if ENABLED(CLASSIC_JERK)
+#define FIRMWARE_VER            "WabbitWare 1.2CJ"
+#if ENABLED(LIN_ADVANCE)
+#define FIRMWARE_VER            "WabbitWare 1.2LACJ"
+#else
+#define FIRMWARE_VER            "WabbitWare 1.2CJ"
+#endif
+#else
+#if ENABLED(LIN_ADVANCE)
+#define FIRMWARE_VER            "WabbitWare 1.2LAJD"
+#else
+#define FIRMWARE_VER            "WabbitWare 1.2JD"
+#endif
+#endif
+
 #define BUILD_VOLUME            "400*400*450 (mm)"
 #define TECH_SUPPORT            "https://www.anycubic.com"
 
