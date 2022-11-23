@@ -23,6 +23,9 @@ The animation graphic will appear on the LCD, within 10 seconds you will hear fi
 
 7. Remove microSD card
 8. Power down the printer, wait 10 seconds, power up again. Wait for the main menu to appear before continuing.
+
+----- only contnue if updating from the AnyCubic factory stock firmware -----
+
 9. Connect Pronterface via USB to the Kobra Max and make the serial/usb connection.
 
 [Pronterface Download] (https://github.com/kliment/Printrun/releases/tag/printrun-2.0.0rc8)
