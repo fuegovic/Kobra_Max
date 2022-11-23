@@ -7,7 +7,7 @@ If you are getting great prints from your Kobra Max keep in mind that you can't 
 
 `The PAUSE button in the LCD Print Ststus display has been repurposed to allow for filament changes. If you require this pause button to actually pause the printer, do not update the firmware!`
 
-You will be using a host via USB to complete the firmware update (Repetier Server Pro, Octoprint, Pronterface, etc).
+You will be using a host via USB to complete the firmware update (Repetier Server Pro, Octoprint, Pronterface, etc) if you are using the AnyCubic stock firmware. If you are updating from a prior release of this or Zombie's firmware release only re-flashing the firmware is needed. I.e. don't do the M502/M500 from a host.
 
 # Update Procedure
 
