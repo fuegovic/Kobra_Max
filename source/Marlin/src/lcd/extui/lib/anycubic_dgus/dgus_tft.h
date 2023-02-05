@@ -38,17 +38,17 @@
 #define DEVICE_NAME             "Bullwinkle"
 //#define FIRMWARE_VER            "Marlin V2.0.8.1"
 #if ENABLED(CLASSIC_JERK)
-#define FIRMWARE_VER            "WabbitWare 1.3CJ"
+#define FIRMWARE_VER            "WabbitWare 1.31CJ"
 #if ENABLED(LIN_ADVANCE)
-#define FIRMWARE_VER            "WabbitWare 1.3LACJ"
+#define FIRMWARE_VER            "WabbitWare 1.31LACJ"
 #else
-#define FIRMWARE_VER            "WabbitWare 1.3CJ"
+#define FIRMWARE_VER            "WabbitWare 1.31CJ"
 #endif
 #else
 #if ENABLED(LIN_ADVANCE)
-#define FIRMWARE_VER            "WabbitWare 1.3LAJD"
+#define FIRMWARE_VER            "WabbitWare 1.31LAJD"
 #else
-#define FIRMWARE_VER            "WabbitWare 1.3JD"
+#define FIRMWARE_VER            "WabbitWare 1.31JD"
 #endif
 #endif
 

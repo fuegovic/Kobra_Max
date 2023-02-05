@@ -47,7 +47,7 @@
 #include "../../module/probe.h"
 
 namespace ExtUI {
-
+	
   // The ExtUI implementation can store up to this many bytes
   // in the EEPROM when the methods onStoreSettings and
   // onLoadSettings are called.

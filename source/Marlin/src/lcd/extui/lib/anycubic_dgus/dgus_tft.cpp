@@ -2530,16 +2530,16 @@ namespace Anycubic {
 
               case 2: // PLA
               { 
-                setTargetTemp_celsius(205, E0);
-                setTargetTemp_celsius(60, BED);
+                setTargetTemp_celsius(PREHEAT_1_TEMP_HOTEND, E0);// MEL_MOD
+                setTargetTemp_celsius(PREHEAT_1_TEMP_BED, BED);// MEL_MOD
                 ChangePageOfTFT(PAGE_PREHEAT);
               }
               break;
 
               case 3: // PETG
               { 
-                setTargetTemp_celsius(230, E0);
-                setTargetTemp_celsius(85, BED);
+                setTargetTemp_celsius(PREHEAT_2_TEMP_HOTEND, E0);// MEL_MOD
+                setTargetTemp_celsius(PREHEAT_2_TEMP_BED, BED);// MEL_MOD
                 ChangePageOfTFT(PAGE_PREHEAT);
               }
 
@@ -2610,6 +2610,7 @@ namespace Anycubic {
               break;
 
               case 4:   // stop
+						   	setTargetTemp_celsius(0, E0);// kill the heating
                 filament_cmd = FILA_NO_ACT;
               break;
               

@@ -34,6 +34,7 @@
  * Example:
  *   M73 P25 ; Set progress to 25%
  */
+ 
 void GcodeSuite::M73() {
   if (parser.seen('P'))
     ui.set_progress((PROGRESS_SCALE) > 1

@@ -804,7 +804,7 @@
  */
 #define DEFAULT_ACCELERATION          1500     // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1500    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   4000    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -816,7 +816,7 @@
  */
 #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK  10So is working?
+  #define DEFAULT_XJERK  10//So is working?
   #define DEFAULT_YJERK  10
   #define DEFAULT_ZJERK  0.4
 
