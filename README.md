@@ -47,6 +47,7 @@ eSteps for extrusion, any PID tuning may have to be redone
 5. Max bed temp 120C - increased temp rise time to compensate for slow heating rate as temp rises (not all will achieve high temps)
 6. Default feedrates and acceleration have been increased
 7. Firmware version info indicates enabled items
+8. For PREPARE, filament load/unload has been automated for release 1.3
 
 CJ = Classic Jerk
 LA = Linear Advance
