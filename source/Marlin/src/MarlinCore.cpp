@@ -250,6 +250,10 @@ PGMSTR(SP_X_LBL, " X:"); PGMSTR(SP_Y_LBL, " Y:"); PGMSTR(SP_Z_LBL, " Z:"); PGMST
 volatile MarlinState marlin_state = MF_INITIALIZING;
 volatile HomingState homing_state = NOT_HOMING;
 
+// Define gcodeComment - MEL_MOD malebuffy
+const char * gcodeComment = "G-Code Status Area";
+bool activeFilamentChange = false;// MEL_MOD flag for M600 test
+	 
 // For M109 and M190, this flag may be cleared (by M108) to exit the wait loop
 bool wait_for_heatup = true;
 

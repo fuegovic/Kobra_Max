@@ -35,20 +35,20 @@
 #include "../../../../inc/MarlinConfigPre.h"
 #include "../../ui_api.h"
 
-#define DEVICE_NAME             "Bullwinkle"
+#define DEVICE_NAME             "Rocky"
 //#define FIRMWARE_VER            "Marlin V2.0.8.1"
 #if ENABLED(CLASSIC_JERK)
-#define FIRMWARE_VER            "WabbitWare 1.31CJ"
+#define FIRMWARE_VER            "WabbitWare 1.5CJ"
 #if ENABLED(LIN_ADVANCE)
-#define FIRMWARE_VER            "WabbitWare 1.31LACJ"
+#define FIRMWARE_VER            "WabbitWare 1.5LACJ"
 #else
-#define FIRMWARE_VER            "WabbitWare 1.31CJ"
+#define FIRMWARE_VER            "WabbitWare 1.5CJ"
 #endif
 #else
 #if ENABLED(LIN_ADVANCE)
-#define FIRMWARE_VER            "WabbitWare 1.31LAJD"
+#define FIRMWARE_VER            "WabbitWare 1.5LAJD"
 #else
-#define FIRMWARE_VER            "WabbitWare 1.31JD"
+#define FIRMWARE_VER            "WabbitWare 1.4JD"
 #endif
 #endif
 
@@ -178,6 +178,7 @@
 #define TXT_PRINT_SPEED         0x2000+9*0x30
 #define TXT_PRINT_TIME          0x2000+10*0x30
 #define TXT_PRINT_PROGRESS       0x2000+11*0x30
+#define TXT_PRINT_COMMENT       0x2000+12*0x30// MEL_MOD malebuffy
 
 // PRINT ADJUST TXT
 
@@ -229,7 +230,9 @@
 #define TXT_OUTAGE_RECOVERY_PROGRESS 0x2210
 #define TXT_OUTAGE_RECOVERY_FILE     0x2180
 
-
+//PREVIEW PAGE
+#define TXT_BASE64									 0x3020
+#define TXT_VAR_IMAGE 							 0x7FFE
 
 #define ADDRESS_SYSTEM_AUDIO     0x0080
 
@@ -374,8 +377,7 @@
 
 #define COLOR_RED              0xf800
 #define COLOR_BLUE             0x0210
-
-
+#define COLOUR_WHITE           0xffff
 
 
 namespace Anycubic {
@@ -517,6 +519,10 @@ namespace Anycubic {
       static void ChangePageOfTFT(uint32_t page_index);
       static void FakeChangePageOfTFT(uint32_t page_index);
       static void LcdAudioSet(ExtUI::audio_t audio);
+			
+			//PREVIEW PAGE
+			static void page213_handle(void);// MEL_MOD malebuffy
+			static void SendVarIconToTFT(const char *vdata, uint32_t address);// MEL_MOD malebuffy
 
     private:
     

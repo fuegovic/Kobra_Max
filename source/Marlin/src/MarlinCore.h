@@ -32,7 +32,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+extern const char * gcodeComment;// MEL_MOD malebuffy
+extern bool activeFilamentChange;// MEL_MOD testing to see if in filament change
 extern char pause_steps ;
 
 void stop();

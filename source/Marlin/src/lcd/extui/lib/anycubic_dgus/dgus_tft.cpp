@@ -150,6 +150,7 @@ namespace Anycubic {
   void DgusTFT::Startup() {
     selectedfile[0]   = '\0';
     panel_command[0]  = '\0';
+		gcodeComment 			= "G-Code Status Area";// MEL_MOD malebuffy
     command_len       = 0;
     printer_state     = AC_printer_idle;
     pause_state       = AC_paused_idle;
@@ -389,7 +390,7 @@ namespace Anycubic {
 
         lcd_txtbox_page = 0;
         if(lcd_txtbox_index) {
-          SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+          SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
           lcd_txtbox_index = 0;
         }
 
@@ -404,7 +405,7 @@ namespace Anycubic {
 
         lcd_txtbox_page = 0;
         if(lcd_txtbox_index) {
-          SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+          SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
           lcd_txtbox_index = 0;
         }
 
@@ -435,8 +436,8 @@ namespace Anycubic {
       } break;
 
       case AC_timer_paused: {
-        printer_state = AC_printer_paused;
-        pause_state   = AC_paused_idle;
+//        printer_state = AC_printer_paused;
+//        pause_state   = AC_paused_idle;
 //      SendtoTFTLN(AC_msg_paused);
       }
       break;
@@ -1129,6 +1130,7 @@ namespace Anycubic {
   void DgusTFT::SelectFile() {
     strncpy(selectedfile, panel_command + 4, command_len - 4);
     selectedfile[command_len - 5] = '\0';
+		gcodeComment = "G-Code Status Area";// MEL_MOD malebuffy
     #if ACDEBUG(AC_FILE)
       SERIAL_ECHOLNPAIR_F(" Selected File: ",selectedfile);
     #endif
@@ -1200,8 +1202,6 @@ namespace Anycubic {
 
   		  temp=constrain((uint16_t)control_value, 0, BED_MAXTEMP);
           setTargetTemp_celsius(temp, BED);
-           //sprintf(str_buf,"%u/%u",(uint16_t)thermalManager.degBed(),(uint16_t)control_value);
-  	     //SendTxtToTFT(str_buf,TXT_PRINT_BED );
   	    }
   	  	else if(control_index==TXT_FAN_SPEED_TARGET)//fan speed
   	  	{
@@ -1344,15 +1344,14 @@ namespace Anycubic {
 
 	  case 1:   // main page, print
 	  {
-
         lcd_txtbox_page = 0;
 
         if(lcd_txtbox_index) {
-          SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+          SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
           lcd_txtbox_index = 0;
         }
         if (isPrinting()) {
-				  ChangePageOfTFT(PAGE_STATUS2);// MEL MOD
+				  ChangePageOfTFT(PAGE_STATUS2);// MEL_MOD changes to PRINT page if printing via USB
 			   } else {
 					ChangePageOfTFT(PAGE_FILE);
 					SendFileList(0);
@@ -1422,7 +1421,7 @@ namespace Anycubic {
 	case 1: // return
 	  {
 	   ChangePageOfTFT(PAGE_MAIN);
-	   SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+	   SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
 	  }
 	  break;
 
@@ -1431,7 +1430,7 @@ namespace Anycubic {
 	  if(lcd_txtbox_page > 0) {
 	    lcd_txtbox_page--;
 
-        SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+        SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
 	    lcd_txtbox_index = 0;
 
 	    SendFileList(lcd_txtbox_page*5);
@@ -1444,7 +1443,7 @@ namespace Anycubic {
       if((lcd_txtbox_page+1) * 5 < filenavigator.getFileNum()) {
         lcd_txtbox_page++;
      	
-        SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+        SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
         lcd_txtbox_index = 0;
 
      	SendFileList(lcd_txtbox_page*5);
@@ -1463,7 +1462,7 @@ namespace Anycubic {
 
         lcd_txtbox_page = 0;
         if(lcd_txtbox_index) {
-          SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+          SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
           lcd_txtbox_index = 0;
         }
 
@@ -1479,7 +1478,7 @@ namespace Anycubic {
 
           if(filenavigator.filelist.seek(lcd_txtbox_page*5+(lcd_txtbox_index-1))) {
   
-            SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+            SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
 
 #if ENABLED(CASE_LIGHT_ENABLE)
             setCaseLightState(1);
@@ -1512,7 +1511,7 @@ namespace Anycubic {
               SERIAL_ECHOLNPAIR("start print: ", filenavigator.filelist.longFilename());
 #endif
 
-              SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
+              SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0+0x30*(lcd_txtbox_index-1));
 
               // Allows printer to restart the job if we dont want to recover
               if (printer_state == AC_printer_resuming_from_power_outage) {
@@ -1541,7 +1540,8 @@ namespace Anycubic {
               sprintf(str_buf, "%s H ", utostr3(time/60));
               sprintf(str_buf+strlen(str_buf), "%s M", utostr3(time%60));
               SendTxtToTFT(str_buf, TXT_PRINT_TIME);
-
+							gcodeComment = "G-Code Status Area";// MEL_MOD malebuffy
+							SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);
               ChangePageOfTFT(PAGE_STATUS2);
             }
           }
@@ -1577,7 +1577,7 @@ namespace Anycubic {
           SendColorToTFT(COLOR_RED, TXT_DISCRIBE_0 + 0x30*(lcd_txtbox_index-1));
 
           if(lcd_txtbox_index_last && lcd_txtbox_index_last != lcd_txtbox_index) {   // 1~5
-            SendColorToTFT(COLOR_BLUE, TXT_DISCRIBE_0 + 0x30*(lcd_txtbox_index_last-1));
+            SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0 + 0x30*(lcd_txtbox_index_last-1));
           }
           lcd_txtbox_index_last = lcd_txtbox_index;
 	    }
@@ -1677,6 +1677,7 @@ namespace Anycubic {
         sprintf(str_buf, "%s H ", utostr3(time/60));
         sprintf(str_buf+strlen(str_buf), "%s M", utostr3(time%60));
         SendTxtToTFT(str_buf, TXT_PRINT_TIME);
+				SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
     }
 
     void DgusTFT::page4_handle(void)
@@ -1701,17 +1702,25 @@ namespace Anycubic {
         }
         break;
 
-        case 2:  // print pause (or continue)
-				 // if(isPrintingFromMedia()) {
-           // pausePrint();
-           // printer_state = AC_printer_pausing;
-           // pause_state = AC_paused_idle;
-          //  ChangePageOfTFT(PAGE_WAIT_PAUSE);
-//            injectCommands_P(PSTR("M108"));     // stop waiting temperature M109
-					// } else {
-					 	TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL MOD
-						wait_for_heatup = false;
-          //}
+        case 2:  // print pause (or continue) MEL_MOD
+				  if(isPrintingFromMedia()) {
+					  if (activeFilamentChange == true) {
+								activeFilamentChange = false;// reset the flag so PAUSE works again
+								TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL_MOD
+								wait_for_heatup = false;
+					    } else {
+								pausePrint();
+								printer_state = AC_printer_pausing;
+								pause_state = AC_paused_idle;
+								ChangePageOfTFT(PAGE_WAIT_PAUSE);
+							}
+					  } else {
+							if (activeFilamentChange == true) {
+								activeFilamentChange = false;// reset the flag so PAUSE works again
+								TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL_MOD
+								wait_for_heatup = false;
+							}
+          }
           break;
 
         case 3: // print stop
@@ -1767,6 +1776,7 @@ namespace Anycubic {
         sprintf(str_buf, "%s H ", utostr3(time/60));
         sprintf(str_buf+strlen(str_buf), "%s M", utostr3(time%60));
         SendTxtToTFT(str_buf, TXT_PRINT_TIME);
+				SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
     }
 
     void DgusTFT::page5_handle(void)          // print settings
