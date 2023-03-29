@@ -35,20 +35,20 @@
 #include "../../../../inc/MarlinConfigPre.h"
 #include "../../ui_api.h"
 
-#define DEVICE_NAME             "Rocky"
+#define DEVICE_NAME             "Natasha"
 //#define FIRMWARE_VER            "Marlin V2.0.8.1"
 #if ENABLED(CLASSIC_JERK)
-#define FIRMWARE_VER            "WabbitWare 1.5CJ"
+#define FIRMWARE_VER            "WabbitWare 1.6CJ"
 #if ENABLED(LIN_ADVANCE)
-#define FIRMWARE_VER            "WabbitWare 1.5LACJ"
+#define FIRMWARE_VER            "WabbitWare 1.6LACJ"
 #else
-#define FIRMWARE_VER            "WabbitWare 1.5CJ"
+#define FIRMWARE_VER            "WabbitWare 1.6CJ"
 #endif
 #else
 #if ENABLED(LIN_ADVANCE)
-#define FIRMWARE_VER            "WabbitWare 1.5LAJD"
+#define FIRMWARE_VER            "WabbitWare 1.6LAJD"
 #else
-#define FIRMWARE_VER            "WabbitWare 1.4JD"
+#define FIRMWARE_VER            "WabbitWare 1.6JD"
 #endif
 #endif
 

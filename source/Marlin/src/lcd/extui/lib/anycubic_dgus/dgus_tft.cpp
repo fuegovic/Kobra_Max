@@ -3,7 +3,7 @@
    Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
 
    Based on Sprinter and grbl.
-   Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+   Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm`
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -1305,12 +1305,8 @@ void DgusTFT::page1_handle(void) {
         SendColorToTFT(COLOUR_WHITE, TXT_DISCRIBE_0 + 0x30 * (lcd_txtbox_index - 1));
         lcd_txtbox_index = 0;
       }
-      if (isPrinting()) {
-        ChangePageOfTFT(PAGE_STATUS2);// MEL_MOD changes to PRINT page if printing via USB
-      } else {
         ChangePageOfTFT(PAGE_FILE);
         SendFileList(0);
-      }
       break;
 
     case 2:   // tool
@@ -1324,6 +1320,7 @@ void DgusTFT::page1_handle(void) {
 
     case 3:   // prepare
       ChangePageOfTFT(PAGE_PREPARE);
+
       break;
 
     case 4:   // system
@@ -1353,10 +1350,12 @@ void DgusTFT::page1_handle(void) {
   if (millis() < (flash_time + 1500) ) {
     return;
   }
-
+			if (printer_state != AC_printer_idle && isPrinting()) {
+			  gcodeComment = "Host Printing Mode";// MEL_MOD indicate where GCODE coming from
+        ChangePageOfTFT(PAGE_STATUS2);// MEL_MOD auto change to PRINT page if printing via USB
+      } 
   flash_time = millis();
 }
-
 
 void DgusTFT::page2_handle(void) {
 
@@ -1535,8 +1534,7 @@ void DgusTFT::page2_handle(void) {
 }
 
 
-void DgusTFT::page3_handle(void)
-{
+void DgusTFT::page3_handle(void) {
 
   static millis_t flash_time = 0;
   char str_buf[20];
@@ -1561,13 +1559,19 @@ void DgusTFT::page3_handle(void)
       SERIAL_ECHOLNPAIR("printer_state: ", printer_state);
       SERIAL_ECHOLNPAIR("pause_state: ", pause_state);
 #endif
+			if (activeFilamentChange == true) {// MEL_MOD that gets back to the normal PAUSE page
+          activeFilamentChange = false;// reset the flag so PAUSE works again
+          TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL_MOD
+          wait_for_heatup = false;
+					ChangePageOfTFT(PAGE_STATUS2);// MEL_MOD auto change back to print page, we're done
+        } else {
       if (pause_state == AC_paused_idle || pause_state == AC_paused_filament_lack ||
           printer_state == AC_printer_resuming_from_power_outage) {
         if (READ(FIL_RUNOUT_PIN) == getFilamentRunoutOriginState()) {
           printer_state = AC_printer_idle;
           pause_state = AC_paused_idle;
           resumePrint();
-          ChangePageOfTFT(PAGE_STATUS2);    // show pasue print
+          ChangePageOfTFT(PAGE_STATUS2);    // show pause print (normal print page)
         } else {
           pop_up_index = 15;
         }
@@ -1576,6 +1580,7 @@ void DgusTFT::page3_handle(void)
       } else {
         setUserConfirmed();
       }
+		}
       break;
 
     case 3: // print stop
@@ -1650,23 +1655,11 @@ void DgusTFT::page4_handle(void)
 
     case 2:  // print pause (or continue) MEL_MOD
       if (isPrintingFromMedia()) {
-        if (activeFilamentChange == true) {
-          activeFilamentChange = false;// reset the flag so PAUSE works again
-          TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL_MOD
-          wait_for_heatup = false;
-        } else {
           pausePrint();
           printer_state = AC_printer_pausing;
           pause_state = AC_paused_idle;
           ChangePageOfTFT(PAGE_WAIT_PAUSE);
         }
-      } else {
-        if (activeFilamentChange == true) {
-          activeFilamentChange = false;// reset the flag so PAUSE works again
-          TERN_(HAS_RESUME_CONTINUE, wait_for_user = false);// MEL_MOD
-          wait_for_heatup = false;
-        }
-      }
       break;
 
     case 3: // print stop
@@ -1722,7 +1715,10 @@ void DgusTFT::page4_handle(void)
   sprintf(str_buf, "%s H ", utostr3(time / 60));
   sprintf(str_buf + strlen(str_buf), "%s M", utostr3(time % 60));
   SendTxtToTFT(str_buf, TXT_PRINT_TIME);
-  SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
+	if (activeFilamentChange == true) {
+		 ChangePageOfTFT(PAGE_STATUS1);// MEL_MOD auto change to RESUME page for filament change
+	}
+		SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
 }
 
 void DgusTFT::page5_handle(void)          // print settings
