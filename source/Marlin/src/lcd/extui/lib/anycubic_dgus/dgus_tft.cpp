@@ -1092,7 +1092,7 @@ void DgusTFT::SendFileList(int8_t startindex) {
 
 void DgusTFT::SelectFile() {
   strncpy(selectedfile, panel_command + 4, command_len - 4);
-  selectedfile[command_len - 5] = '\0';
+  selectedfile[command_len - 4] = '\0';// MEL_FOLDER (was 5)
   gcodeComment = "G-Code Status Area";// MEL_MOD malebuffy
 //#if ACDEBUG(AC_FILE)
   SERIAL_ECHOLNPAIR_F(" Selected File: ", selectedfile);
@@ -1356,14 +1356,14 @@ void DgusTFT::page1_handle(void) {
   if (millis() < (flash_time + 1500) ) {
     return;
   }
-			if (printer_state != AC_printer_idle && isPrinting()) {
+			if (printer_state != AC_printer_idle && pause_state != AC_paused_filament_lack && isPrinting()) {
 			  gcodeComment = "Host Printing Mode";// MEL_MOD indicate where GCODE coming from
         ChangePageOfTFT(PAGE_STATUS2);// MEL_MOD auto change to PRINT page if printing via USB
       } 
   flash_time = millis();
 }
 
-void DgusTFT::page2_handle(void) {
+void DgusTFT::page2_handle(void) {// FILE LISTING and SELECTION
 
   char file_index = 0;
 
@@ -3723,7 +3723,6 @@ void DgusTFT::printerStatsToTFT(void) {// MEL_MOD printer statistics
 
 	//print_job_timer.showStats();//
 		  //SERIAL_ECHOLNPAIR("Total Prints2: ", buffer);
-	
 	}
 } // namespace
 
