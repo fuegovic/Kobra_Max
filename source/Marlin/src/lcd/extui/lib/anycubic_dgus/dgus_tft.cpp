@@ -153,7 +153,7 @@ DgusTFT::DgusTFT() {
 void DgusTFT::Startup() {
   selectedfile[0]   = '\0';
   panel_command[0]  = '\0';
-  gcodeComment      = "G-Code Status Area";// MEL_MOD malebuffy
+  gcodeComment      = " G-Code Status Area ";// MEL_MOD malebuffy
   command_len       = 0;
   printer_state     = AC_printer_idle;
   pause_state       = AC_paused_idle;
@@ -1093,8 +1093,8 @@ void DgusTFT::SendFileList(int8_t startindex) {
 
 void DgusTFT::SelectFile() {
   strncpy(selectedfile, panel_command + 4, command_len - 4);
-  selectedfile[command_len - 4] = '\0';// MEL_FOLDER (was 5)
-  gcodeComment = "G-Code Status Area";// MEL_MOD malebuffy
+  selectedfile[command_len - 5] = '\0';// MEL_FOLDER (was 5)
+  gcodeComment = " G-Code Status Area ";// MEL_MOD malebuffy
 //#if ACDEBUG(AC_FILE)
   SERIAL_ECHOLNPAIR_F(" Selected File: ", selectedfile);
 //#endif
@@ -1494,8 +1494,10 @@ void DgusTFT::page2_handle(void) {// FILE LISTING and SELECTION
           sprintf(str_buf, "%s H ", utostr3(time / 60));
           sprintf(str_buf + strlen(str_buf), "%s M", utostr3(time % 60));
           SendTxtToTFT(str_buf, TXT_PRINT_TIME);
-          gcodeComment = "G-Code Status Area";// MEL_MOD malebuffy
-          SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);
+					if (gcodeComment != " G-Code Status Area ") {
+            gcodeComment = " G-Code Status Area ";// MEL_MOD malebuffy
+            SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);
+			  	}
           ChangePageOfTFT(PAGE_STATUS2);
         }
       }
@@ -1637,13 +1639,13 @@ void DgusTFT::page3_handle(void) {
   sprintf(str_buf + strlen(str_buf), "%s M", utostr3(time % 60));
   SendTxtToTFT(str_buf, TXT_PRINT_TIME);
   SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
+
 }
 
-void DgusTFT::page4_handle(void)
-{
+void DgusTFT::page4_handle(void) {
 
   static millis_t flash_time = 0;
-  char str_buf[20];
+  char str_buf[30];
   static uint8_t progress_last = 0;
   static uint16_t feedrate_last = 0;
 
@@ -1707,6 +1709,9 @@ void DgusTFT::page4_handle(void)
   }
 
   if (isPrintingFromMedia()) {
+		  sprintf(str_buf, "X:%3.0f Y:%3.0f Z:%3.2f", getAxisPosition_mm(X), getAxisPosition_mm(Y), getAxisPosition_mm(Z));// MELS MOD
+			SendTxtToTFT(str_buf, TXT_PRINT_COMMENT);// this will show the Z height
+			
     if (progress_last != getProgress_percent()) {
       sprintf(str_buf, "%d", getProgress_percent());
       SendTxtToTFT(str_buf, TXT_PRINT_PROGRESS);
@@ -1715,6 +1720,7 @@ void DgusTFT::page4_handle(void)
   } else { // we are printing from a HOST
     sprintf(str_buf, "Z:%3.2f", getAxisPosition_mm(Z));// MELS MOD
     SendTxtToTFT(str_buf, TXT_PRINT_NAME);// this will show the Z height
+		SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
     //sprintf(str_buf, "%d", getProgress_percent());
     //SendTxtToTFT(str_buf, TXT_PRINT_PROGRESS);
   }
@@ -1726,7 +1732,6 @@ void DgusTFT::page4_handle(void)
 	if (activeFilamentChange == true) {
 		 ChangePageOfTFT(PAGE_STATUS1);// MEL_MOD auto change to RESUME page for filament change
 	}
-		SendTxtToTFT(gcodeComment, TXT_PRINT_COMMENT);// MEL_MOD malebuffy
 }
 
 void DgusTFT::page5_handle(void)          // print settings
@@ -3724,6 +3729,7 @@ void DgusTFT::printerStatsToTFT(void) {// MEL_MOD printer statistics
 
 	//print_job_timer.showStats();//
 		  //SERIAL_ECHOLNPAIR("Total Prints2: ", buffer);
+			//uint32_t crapy = getProgress_seconds_remaining();
 	}
 } // namespace
 
