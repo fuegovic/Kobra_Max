@@ -7,6 +7,10 @@ If you are getting great prints from your Kobra Max keep in mind that you can't 
 
 You will be using a host via USB to complete the firmware update (Repetier Server Pro, Octoprint, Pronterface, etc) if you are using the AnyCubic stock firmware. If you are updating from a prior release of mine or Zombie's firmware release only re-flashing the firmware is needed. I.e. don't do the M502/M500 from a host.
 
+The firmware here was designed to work with Anycubic's original Tri-Gorilla_ProA V1.0.4 motherboard and a Nextion LCD that uses a DWIN_FOLDER. Anycubic has changed their production run so new Kobra Max's (and this might include the Kobra Series) with a Tri-Gorilla_ProB V1.0.2. There have been reports of the original firmware not working on the newer production or replacement motherboards. To determine which motherboard you have, the original uses a USB type B, the newer motherboards use a micro USB connector. The photo shows the difference.
+
+<img width="712" alt="Kobra_Max 2023-08-02 10-59-02" src="https://github.com/wabbitguy/Kobra_Max/assets/8953419/fb21433e-a221-41a9-8b69-c885f36b89a9">
+
 # Update Procedure
 
 1. Power off the Kobra Max
@@ -72,3 +76,4 @@ When the printer receives the M600 filament change GCODE:
 ![alt-text](https://github.com/wabbitguy/Kobra_Max/blob/master/images/single_layer_change.jpg)
 
 ![alt-text](https://github.com/wabbitguy/Kobra_Max/blob/master/images/end_result.jpg)
+
