@@ -63,11 +63,11 @@ When the printer receives the M600 filament change GCODE:
 1. The hot end will lift and move to the back left corner (called the park position).
 2. The filament will then retract all the way back to the extruder to allow you to remove it.
 3. Insert the new filament approximately 1 to 2" just past the extruder output; do NOT push the filament all the way to the hot end!)
-4. On the LCD Status display press the "PAUSE" or "RESUME" button (it's mislabeled now but has closed source so can not be altered)
+4. On the LCD Status display press the  "RESUME" button.
 5. Filament will feed all the way to the hot end, and purge approximately 40mm to ensure accurate change
 6. Wipe the nozzle, printer will then automatically return to the original, lower and resume printing
 
-*Note* after purging there is a slight delay before the hot end returns to the print job. Be patient.
+*Note* after purging/wiping there is a slight delay before the hot end returns to the print job. Be patient. Some hold a metal spatula under it so it doesn't drip.
 
 # Filament Printing Examples
 
