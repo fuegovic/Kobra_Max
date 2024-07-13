@@ -34,7 +34,7 @@ The animation graphic will appear on the LCD, within 10 seconds you will hear fi
 
 9. Connect Pronterface via USB to the Kobra Max and make the serial/usb connection.
 
-[Pronterface Download] (https://github.com/kliment/Printrun/releases/tag/printrun-2.0.0rc8)
+[Pronterface Download](https://github.com/kliment/Printrun/releases/tag/printrun-2.0.0rc8)
 
 10. In Pronterface "Command to send" area, type in M502 and click the SEND button. Do this *TWICE*
 11. Type in M500 and click SEND.
