@@ -2,6 +2,7 @@ Marlin firmware for the AnyCubic Kobra Max.
 Based off Marlin 2.0.8 (bugfix)
 
 # Note
+The compiled version is in workspace/firmware.bin
 - Removed startup jingle, otherwise same as https://github.com/wabbitguy/Kobra_Max
 
 # Important - READ THIS
