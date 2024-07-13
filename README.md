@@ -5,6 +5,8 @@ Based off Marlin 2.0.8 (bugfix)
 The compiled version is in [/workspace/firmware.bin](https://github.com/fuegovic/Kobra_Max/blob/master/workspace/firmware.bin)
 - Removed startup jingle, otherwise same as https://github.com/wabbitguy/Kobra_Max
 
+- How to compile the firmware from scratch: [tutorial_how_to_build_anycubic_marlin_source_code](https://www.reddit.com/r/anycubic/comments/y2waxu/tutorial_how_to_build_anycubic_marlin_source_code/)
+
 # Important - READ THIS
 
 If you are getting great prints from your Kobra Max keep in mind that you can't fix something that's not broken. Updating your firmware may void your warranty and may or may not perform exactly as you expect it to. Thus, firmware updates are at your own risk.
